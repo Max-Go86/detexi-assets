@@ -6,7 +6,6 @@ var WH='https://max-go.app.n8n.cloud/webhook/5a36b2a9-5d3a-47b5-a65e-f83b9ee9abd
 var SRC='detexi-web-v1';
 var MAX_MSG=10,WIN_MS=60000,MAX_LEN=500;
 var CDN='https://cdn.jsdelivr.net/gh/Max-Go86/detexi-assets@main/';
-var LOGO_URL=CDN+'Detexi.png';
 var ICON_URL=CDN+'Detexi%20-%20ronde%20logo%20witte%20achtergrond.png';
 
 var sid=(function(){var s=sessionStorage.getItem('_dtxs');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2);sessionStorage.setItem('_dtxs',s);}return s;})();
@@ -32,21 +31,14 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:-app
 +'#_dtxbdg{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#e53e3e;border:2.5px solid #fff;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}'
 +'#_dtxw{position:fixed;bottom:96px;right:24px;z-index:2147483646;width:348px;max-height:530px;border-radius:20px;background:#fff;display:flex;flex-direction:column;box-shadow:0 16px 56px rgba(0,0,0,.2),0 0 0 1px rgba(0,0,0,.08);opacity:0;transform:translateY(16px) scale(.97);pointer-events:none;transition:opacity .2s,transform .28s cubic-bezier(.34,1.56,.64,1)}'
 +'#_dtxw.on{opacity:1;transform:none;pointer-events:all}'
-/* Header : fond noir exact du logo */
-+'#_dtxhd{background:#0a0a0a;border-radius:20px 20px 0 0;display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}'
-+'._hd-top{padding:12px 16px;display:flex;align-items:center;justify-content:space-between}'
++'#_dtxhd{background:#0a0a0a;border-radius:20px 20px 0 0;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}'
 +'._hd-left{display:flex;align-items:center;gap:10px}'
-/* Avatar rond sans contour ni fond coloré */
 +'._hav{width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0}'
 +'._hav img{width:100%;height:100%;object-fit:cover}'
 +'._hn{font-size:13px;font-weight:600;color:#fff;line-height:1.2}'
-+'._sub{font-size:10px;color:rgba(255,255,255,.55);margin-top:1px}'
 +'._st{font-size:10px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:5px;margin-top:2px}'
 +'._sd{width:6px;height:6px;border-radius:50%;background:#48bb78;flex-shrink:0;animation:_pls 2.2s infinite}'
 +'@keyframes _pls{0%,100%{opacity:1}50%{opacity:.3}}'
-/* Logo Detexi.png dans la bande inférieure du header */
-+'._hd-logo{padding:8px 16px 12px;display:flex;align-items:center}'
-+'._hd-logo img{height:22px;width:auto;object-fit:contain}'
 +'#_dtxcl{background:rgba(255,255,255,.1);border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}'
 +'#_dtxcl:hover{background:rgba(255,255,255,.2)}'
 +'#_dtxms{flex:1;overflow-y:auto;padding:14px 14px;display:flex;flex-direction:column;gap:11px;scroll-behavior:smooth;min-height:120px}'
@@ -59,7 +51,6 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:-app
 +'._mw.u ._mb{background:#2aa8a8;color:#fff;border-bottom-right-radius:3px}'
 +'._mb a{color:#2aa8a8;text-decoration:underline}'
 +'._mw.u ._mb a{color:#fff}'
-/* Avatar bot : logo rond sans contour, image telle quelle */
 +'._mav{width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0}'
 +'._mav img{width:100%;height:100%;object-fit:cover}'
 +'._ty{display:flex;gap:5px;padding:10px 13px;align-items:center}'
@@ -80,43 +71,23 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:-app
 
 var root=document.createElement('div');root.id='_dtx';
 var sty=document.createElement('style');sty.textContent=CSS;root.appendChild(sty);
-
-/* FAB */
 var fab=document.createElement('button');fab.id='_dtxf';fab.setAttribute('aria-label','DETEXI chat');
 fab.innerHTML=CHAT_ICO;
 var bdg=document.createElement('div');bdg.id='_dtxbdg';bdg.textContent='1';fab.appendChild(bdg);
 root.appendChild(fab);
-
-/* WINDOW */
 var win=document.createElement('div');win.id='_dtxw';win.setAttribute('role','dialog');win.setAttribute('aria-modal','true');
-
-/* Header */
 var hd=document.createElement('div');hd.id='_dtxhd';
-hd.innerHTML=
-  '<div class="_hd-top">'
-  +'<div class="_hd-left">'
-  +'<div class="_hav"><img src="'+ICON_URL+'" alt="DETEXI"/></div>'
-  +'<div>'
-  +'<div class="_hn">DETEXI Virtual Assistent</div>'
-  +'<div class="_st"><span class="_sd"></span>Online &mdash; antwoordt direct</div>'
-  +'</div>'
-  +'</div>'
-  +'<button id="_dtxcl" aria-label="Sluiten">'+CLOSE+'</button>'
-  +'</div>'
-  +'<div class="_hd-logo"><img src="'+LOGO_URL+'" alt="Detexi"/></div>';
+hd.innerHTML='<div class="_hd-left"><div class="_hav"><img src="'+ICON_URL+'" alt="DETEXI"/></div><div><div class="_hn">DETEXI Virtual Assistent</div><div class="_st"><span class="_sd"></span>Online &mdash; antwoordt direct</div></div></div><button id="_dtxcl" aria-label="Sluiten">'+CLOSE+'</button>';
 win.appendChild(hd);
-
 var ms=document.createElement('div');ms.id='_dtxms';ms.setAttribute('role','log');ms.setAttribute('aria-live','polite');win.appendChild(ms);
 var ia=document.createElement('div');ia.id='_dtxia';
 ia.innerHTML='<textarea id="_dtxta" rows="1" maxlength="500" aria-label="Typ uw vraag"></textarea><button id="_dtxsb" aria-label="Verzenden">'+SEND+'</button>';
 win.appendChild(ia);
 var pw=document.createElement('div');pw.id='_dtxpw';pw.innerHTML='DETEXI \u00a9 2026 \u2014 AI-assistent';win.appendChild(pw);
 root.appendChild(win);document.body.appendChild(root);
-
 var ta=document.getElementById('_dtxta'),sb=document.getElementById('_dtxsb'),open=false,busy=false;
 var uiLang=(function(){var p=(document.documentElement.lang||navigator.language||'nl').toLowerCase();return p.startsWith('fr')?'fr':'nl';})();
 var t=T[uiLang];ta.placeholder=t.placeholder;
-
 function mkAv(){var d=document.createElement('div');d.className='_mav';var i=document.createElement('img');i.src=ICON_URL;i.alt='';d.appendChild(i);return d;}
 function addMsg(html,role){var w=document.createElement('div');w.className='_mw '+(role==='user'?'u':'b');if(role!=='user'){w.appendChild(mkAv());}var b=document.createElement('div');b.className='_mb';b.innerHTML=html;w.appendChild(b);ms.appendChild(w);ms.scrollTop=ms.scrollHeight;}
 function showTyping(){var w=document.createElement('div');w.className='_mw b';w.id='_dtxty';w.appendChild(mkAv());var b=document.createElement('div');b.className='_mb _ty';b.innerHTML='<span></span><span></span><span></span>';w.appendChild(b);ms.appendChild(w);ms.scrollTop=ms.scrollHeight;}
