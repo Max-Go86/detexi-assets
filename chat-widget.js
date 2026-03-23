@@ -1,1 +1,1 @@
-$(cat /home/claude/detexi-widget-v2.js)
+PLACEHOLDER
