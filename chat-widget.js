@@ -6,8 +6,8 @@ var WH='https://max-go.app.n8n.cloud/webhook/5a36b2a9-5d3a-47b5-a65e-f83b9ee9abd
 var SRC='detexi-web-v1';
 var MAX_MSG=10,WIN_MS=60000,MAX_LEN=500;
 var CDN='https://cdn.jsdelivr.net/gh/Max-Go86/detexi-assets@main/';
-var LOGO_URL=CDN+'detexi-logo-header.png';
-var ICON_URL=CDN+'detexi-icon.png';
+var LOGO_URL=CDN+'Detexi%20-%20logo%20witte%20achtergrond.jpeg';
+var ICON_URL=CDN+'Detexi%20-%20ronde%20logo%20witte%20achtergrond.png';
 
 var sid=(function(){var s=sessionStorage.getItem('_dtxs');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2);sessionStorage.setItem('_dtxs',s);}return s;})();
 var fp=(function(){try{return btoa([navigator.language,screen.width,screen.height,screen.colorDepth,navigator.hardwareConcurrency||0,Intl.DateTimeFormat().resolvedOptions().timeZone].join('|')).slice(0,24);}catch(e){return'x';}})();
@@ -33,7 +33,7 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:-app
 +'#_dtxw.on{opacity:1;transform:none;pointer-events:all}'
 +'#_dtxhd{padding:14px 18px;background:linear-gradient(135deg,#2aa8a8,#1d7a7a);border-radius:20px 20px 0 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}'
 +'._hi{display:flex;flex-direction:column;gap:3px}'
-+'._logo{height:26px;width:auto;object-fit:contain;display:block;filter:brightness(0) invert(1)}'
++'._logo{height:28px;width:auto;max-width:160px;object-fit:contain;display:block}'
 +'._st{font-size:10px;color:rgba(255,255,255,.82);display:flex;align-items:center;gap:5px}'
 +'._sd{width:6px;height:6px;border-radius:50%;background:#48bb78;flex-shrink:0;animation:_pls 2.2s infinite}'
 +'@keyframes _pls{0%,100%{opacity:1}50%{opacity:.3}}'
@@ -51,7 +51,7 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:-app
 +'._mb a{color:#2aa8a8;text-decoration:underline}'
 +'._mw.u ._mb a{color:#fff}'
 +'._mav{width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#eaf6f6;border:1.5px solid rgba(42,168,168,.2)}'
-+'._mav img{width:100%;height:100%;object-fit:contain}'
++'._mav img{width:100%;height:100%;object-fit:cover}'
 +'._ty{display:flex;gap:5px;padding:10px 13px;align-items:center}'
 +'._ty span{width:7px;height:7px;border-radius:50%;background:#b0bec5;animation:_bo .85s ease infinite}'
 +'._ty span:nth-child(2){animation-delay:.15s}._ty span:nth-child(3){animation-delay:.3s}'
@@ -71,7 +71,7 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:-app
 var root=document.createElement('div');root.id='_dtx';
 var sty=document.createElement('style');sty.textContent=CSS;root.appendChild(sty);
 var fab=document.createElement('button');fab.id='_dtxf';fab.setAttribute('aria-label','DETEXI assistent');
-var fabImg=document.createElement('img');fabImg.src=ICON_URL;fabImg.alt='DETEXI';fabImg.style.cssText='width:52px;height:52px;object-fit:contain;border-radius:50%';
+var fabImg=document.createElement('img');fabImg.src=ICON_URL;fabImg.alt='DETEXI';fabImg.style.cssText='width:54px;height:54px;object-fit:cover;border-radius:50%';
 fab.appendChild(fabImg);
 var bdg=document.createElement('div');bdg.id='_dtxbdg';bdg.textContent='1';fab.appendChild(bdg);
 root.appendChild(fab);
