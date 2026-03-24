@@ -21,32 +21,31 @@ var CSS=`
 #dtx-callback-hero{position:absolute !important;bottom:40px !important;right:40px !important;width:300px !important;z-index:10 !important;display:block !important;}
 ._cb-accent{width:4px;background:#2aa8a8;border-radius:0 2px 2px 0;flex-shrink:0;margin-right:18px;}
 ._cb-content{flex:1;min-width:0;}
-._cb-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+._cb-top{display:flex;align-items:center;margin-bottom:8px;}
 ._cb-title{font-size:16px;font-weight:700;color:#ffffff !important;letter-spacing:-0.01em;}
-._cb-badge{background:transparent;border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:3px 10px;font-size:11px;color:#ffffff;font-weight:600;letter-spacing:0.06em;white-space:nowrap;}
-._cb-sub{font-size:12px;color:#94a3b8;margin-bottom:14px;line-height:1.5;}
+._cb-sub{font-size:12px;color:#ffffff !important;margin-bottom:14px;line-height:1.5;opacity:0.75;}
 ._cb-row{display:flex;gap:8px;align-items:center;}
-._cb-input{flex:1;min-width:0;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;font-size:13px;color:#f1f5f9;outline:none;transition:border-color .18s;font-family:inherit;}
-._cb-input::placeholder{color:#475569}
+._cb-input{flex:1;min-width:0;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;font-size:13px;color:#ffffff !important;outline:none;transition:border-color .18s;font-family:inherit;}
+._cb-input::placeholder{color:rgba(255,255,255,0.4)}
 ._cb-input:focus{border-color:#2aa8a8}
 ._cb-input.error{border-color:#ef4444}
 ._cb-errmsg{font-size:10px;color:#ef4444;margin-top:4px;display:none;}
 ._cb-errmsg.show{display:block}
-._cb-btn{padding:10px 18px;background:#2aa8a8;border:none;border-radius:8px;font-size:13px;font-weight:700;color:#fff;white-space:nowrap;cursor:pointer;transition:background .15s,transform .1s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:0.01em;}
+._cb-btn{padding:10px 18px;background:#2aa8a8;border:none;border-radius:8px;font-size:13px;font-weight:700;color:#fff !important;white-space:nowrap;cursor:pointer;transition:background .15s,transform .1s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:0.01em;}
 ._cb-btn:hover:not(:disabled){background:#1d7a7a}
 ._cb-btn:active:not(:disabled){transform:scale(.98)}
-._cb-btn:disabled{opacity:0.6;cursor:not-allowed;background:#334155;color:#94a3b8}
+._cb-btn:disabled{opacity:0.6;cursor:not-allowed;background:#334155;color:#fff}
 ._cb-spinner{width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;animation:_cbspin .7s linear infinite;flex-shrink:0;}
 @keyframes _cbspin{to{transform:rotate(360deg)}}
-._cb-legal{font-size:10px;color:#475569;margin-top:10px;line-height:1.5;}
-._cb-legal a{color:#2aa8a8;text-decoration:none;}
+._cb-legal{font-size:10px;color:#ffffff !important;opacity:0.5;margin-top:10px;line-height:1.5;}
+._cb-legal a{color:#2aa8a8 !important;text-decoration:none;opacity:1;}
 ._cb-legal a:hover{text-decoration:underline}
 ._cb-err-banner{background:rgba(239,68,68,0.1);border:0.5px solid rgba(239,68,68,0.25);border-radius:8px;padding:7px 10px;font-size:10px;color:#f87171;margin-top:8px;display:none;text-align:center;}
 ._cb-err-banner.show{display:block}
 ._cb-success{text-align:center;padding:12px 0;}
 ._cb-success-icon{font-size:28px;margin-bottom:6px;}
-._cb-success-title{font-size:14px;font-weight:600;color:#f1f5f9;margin-bottom:4px;}
-._cb-success-sub{font-size:11px;color:#64748b;line-height:1.5;}
+._cb-success-title{font-size:14px;font-weight:600;color:#ffffff;margin-bottom:4px;}
+._cb-success-sub{font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5;}
 
 @media(max-width:768px){
   #dtx-callback-hero{display:none !important;}
@@ -95,7 +94,6 @@ function mount(target, isHero){
         <div class="_cb-content">
           <div class="_cb-top">
             <div class="_cb-title">Terugbelverzoek</div>
-            <div class="_cb-badge">GRATIS</div>
           </div>
           <div class="_cb-sub">Een adviseur belt u terug binnen 30 seconden.</div>
           <div class="_cb-row">
