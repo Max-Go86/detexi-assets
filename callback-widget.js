@@ -16,8 +16,8 @@ function e164(raw){
 
 var CSS=`
 .dtx-cb-wrap*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.dtx-cb-wrap{background:#0f172a !important;border-radius:14px;padding:20px 20px 20px 0;width:100%;display:flex;overflow:hidden;border:0.5px solid #1e293b;position:relative;}
-.dtx-cb-wrap.hero{background:rgba(15,23,42,0.92) !important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+.dtx-cb-wrap{background:#131413 !important;border-radius:14px;padding:20px 20px 20px 0;width:100%;display:flex;overflow:hidden;border:0.5px solid #1e293b;position:relative;}
+.dtx-cb-wrap.hero{background:rgba(19,20,19,0.92) !important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 #dtx-callback-hero{position:absolute !important;bottom:40px !important;right:40px !important;width:300px !important;z-index:10 !important;display:block !important;}
 ._cb-accent{width:4px;background:#2aa8a8;border-radius:0 2px 2px 0;flex-shrink:0;margin-right:18px;}
 ._cb-content{flex:1;min-width:0;}
