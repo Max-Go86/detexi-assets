@@ -16,144 +16,39 @@ function e164(raw){
 
 var CSS=`
 .dtx-cb-wrap*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-
-/* === DESIGN C2 === */
-.dtx-cb-wrap{
-  background:#0f172a;
-  border-radius:14px;
-  padding:20px 20px 20px 0;
-  width:100%;
-  display:flex;
-  overflow:hidden;
-  border:0.5px solid #1e293b;
-  position:relative;
-}
-.dtx-cb-wrap.hero{
-  background:rgba(15,23,42,0.92);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-}
-#dtx-callback-hero{
-  position:absolute !important;
-  bottom:40px !important;
-  right:40px !important;
-  width:300px !important;
-  z-index:10 !important;
-  display:block !important;
-}
-._cb-accent{
-  width:4px;
-  background:#2aa8a8;
-  border-radius:0 2px 2px 0;
-  flex-shrink:0;
-  margin-right:18px;
-}
+.dtx-cb-wrap{background:#0f172a;border-radius:14px;padding:20px 20px 20px 0;width:100%;display:flex;overflow:hidden;border:0.5px solid #1e293b;position:relative;}
+.dtx-cb-wrap.hero{background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+#dtx-callback-hero{position:absolute !important;bottom:40px !important;right:40px !important;width:300px !important;z-index:10 !important;display:block !important;}
+._cb-accent{width:4px;background:#2aa8a8;border-radius:0 2px 2px 0;flex-shrink:0;margin-right:18px;}
 ._cb-content{flex:1;}
-._cb-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:8px;
-}
-._cb-title{
-  font-size:13px;
-  font-weight:500;
-  color:#f1f5f9;
-}
-._cb-badge{
-  background:#134e4a;
-  border-radius:20px;
-  padding:3px 10px;
-  font-size:10px;
-  color:#2aa8a8;
-  font-weight:500;
-  letter-spacing:0.03em;
-}
-._cb-sub{
-  font-size:11px;
-  color:#64748b;
-  margin-bottom:12px;
-  line-height:1.5;
-}
-._cb-row{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-._cb-input{
-  flex:1;
-  padding:9px 12px;
-  background:#1e293b;
-  border:0.5px solid #334155;
-  border-radius:8px;
-  font-size:12px;
-  color:#f1f5f9;
-  outline:none;
-  transition:border-color .18s;
-  font-family:inherit;
-}
+._cb-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+._cb-title{font-size:13px;font-weight:500;color:#f1f5f9;}
+._cb-badge{background:#134e4a;border-radius:20px;padding:3px 10px;font-size:10px;color:#2aa8a8;font-weight:500;letter-spacing:0.03em;}
+._cb-sub{font-size:11px;color:#64748b;margin-bottom:12px;line-height:1.5;}
+._cb-row{display:flex;gap:8px;align-items:center;}
+._cb-input{flex:1;padding:9px 12px;background:#1e293b;border:0.5px solid #334155;border-radius:8px;font-size:12px;color:#f1f5f9;outline:none;transition:border-color .18s;font-family:inherit;}
 ._cb-input::placeholder{color:#475569}
 ._cb-input:focus{border-color:#2aa8a8}
 ._cb-input.error{border-color:#ef4444}
 ._cb-errmsg{font-size:10px;color:#ef4444;margin-top:4px;display:none;}
 ._cb-errmsg.show{display:block}
-._cb-btn{
-  padding:9px 16px;
-  background:#2aa8a8;
-  border:none;
-  border-radius:8px;
-  font-size:12px;
-  font-weight:500;
-  color:#fff;
-  white-space:nowrap;
-  cursor:pointer;
-  transition:background .15s,transform .1s;
-  font-family:inherit;
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
+._cb-btn{padding:9px 16px;background:#2aa8a8;border:none;border-radius:8px;font-size:12px;font-weight:500;color:#fff;white-space:nowrap;cursor:pointer;transition:background .15s,transform .1s;font-family:inherit;display:flex;align-items:center;gap:6px;}
 ._cb-btn:hover:not(:disabled){background:#1d7a7a}
 ._cb-btn:active:not(:disabled){transform:scale(.98)}
 ._cb-btn:disabled{opacity:0.6;cursor:not-allowed;background:#334155;color:#94a3b8}
-._cb-spinner{
-  width:12px;height:12px;border-radius:50%;
-  border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;
-  animation:_cbspin .7s linear infinite;flex-shrink:0;
-}
+._cb-spinner{width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;animation:_cbspin .7s linear infinite;flex-shrink:0;}
 @keyframes _cbspin{to{transform:rotate(360deg)}}
-._cb-legal{
-  font-size:10px;
-  color:#475569;
-  margin-top:10px;
-  line-height:1.4;
-}
-._cb-legal a{
-  color:#2aa8a8;
-  text-decoration:none;
-}
+._cb-legal{font-size:10px;color:#475569;margin-top:10px;line-height:1.4;}
+._cb-legal a{color:#2aa8a8;text-decoration:none;}
 ._cb-legal a:hover{text-decoration:underline}
-._cb-err-banner{
-  background:rgba(239,68,68,0.1);border:0.5px solid rgba(239,68,68,0.25);
-  border-radius:8px;padding:7px 10px;font-size:10px;color:#f87171;
-  margin-top:8px;display:none;text-align:center;
-}
+._cb-err-banner{background:rgba(239,68,68,0.1);border:0.5px solid rgba(239,68,68,0.25);border-radius:8px;padding:7px 10px;font-size:10px;color:#f87171;margin-top:8px;display:none;text-align:center;}
 ._cb-err-banner.show{display:block}
-._cb-success{
-  text-align:center;
-  padding:12px 0;
-}
+._cb-success{text-align:center;padding:12px 0;}
 ._cb-success-icon{font-size:28px;margin-bottom:6px;}
 ._cb-success-title{font-size:14px;font-weight:500;color:#f1f5f9;margin-bottom:4px;}
 ._cb-success-sub{font-size:11px;color:#64748b;line-height:1.5;}
-
 @media(max-width:768px){
-  #dtx-callback-hero{
-    bottom:16px !important;
-    right:16px !important;
-    left:16px !important;
-    width:auto !important;
-  }
+  #dtx-callback-hero{bottom:16px !important;right:16px !important;left:16px !important;width:auto !important;}
 }
 `;
 
@@ -167,13 +62,11 @@ function mount(target, isHero){
     s.id='_dtx_cb_style';s.textContent=CSS;
     document.head.appendChild(s);
   }
-
   if(isHero && target.parentElement){
     var par=target.parentElement;
     var cs=window.getComputedStyle(par);
     if(cs.position==='static') par.style.position='relative';
   }
-
   var cooldown=0;
   var timer=null;
   var uid=isHero?'h':'m';
@@ -182,7 +75,6 @@ function mount(target, isHero){
     target.innerHTML='';
     var wrap=document.createElement('div');
     wrap.className='dtx-cb-wrap'+(isHero?' hero':'');
-
     if(state==='success'){
       wrap.innerHTML=`
         <div class="_cb-accent"></div>
@@ -209,21 +101,17 @@ function mount(target, isHero){
           <div id="_cb_errmsg_${uid}" class="_cb-errmsg">Ongeldig Belgisch nummer</div>
           <div id="_cb_dupmsg_${uid}" class="_cb-errmsg">Dit nummer is al ingediend.</div>
           <div id="_cb_errbanner_${uid}" class="_cb-err-banner">❌ Fout. Probeer opnieuw of bel <a href="tel:+32485280280">+32 485 28 02 80</a>.</div>
-          <div class="_cb-legal">Door op "Bel me" te klikken bevestigt u dat u onze <a href="https://www.detexi.be/fr/declaration-confidentialite" target="_blank" rel="noopener">privacyverklaring</a> heeft gelezen en aanvaard.</div>
+          <div class="_cb-legal">Door op "Bel me" te klikken bevestigt u dat u onze <a href="https://www.detexi.be/nl/privacyverklaring" target="_blank" rel="noopener">privacyverklaring</a> heeft gelezen en aanvaard.</div>
         </div>`;
     }
-
     target.appendChild(wrap);
     if(state==='success') return;
-
     var inp=document.getElementById('_cb_phone_'+uid);
     var btn=document.getElementById('_cb_btn_'+uid);
     var errmsg=document.getElementById('_cb_errmsg_'+uid);
     var dupmsg=document.getElementById('_cb_dupmsg_'+uid);
     var errbanner=document.getElementById('_cb_errbanner_'+uid);
-
     if(cooldown>0) setDisabled(btn,cooldown);
-
     inp.addEventListener('input',function(){
       inp.classList.remove('error');
       errmsg.classList.remove('show');
@@ -282,7 +170,6 @@ function mount(target, isHero){
       errbanner.classList.add('show');
     }
   }
-
   render('form');
 }
 
