@@ -48,23 +48,10 @@ var CSS=`
 ._cb-success-title{font-size:14px;font-weight:500;color:#f1f5f9;margin-bottom:4px;}
 ._cb-success-sub{font-size:11px;color:#64748b;line-height:1.5;}
 
-/* === MOBILE === */
+/* === MOBILE : masquer le hero widget, garder seulement dtx-callback === */
 @media(max-width:768px){
   #dtx-callback-hero{
-    position:fixed !important;
-    bottom:0 !important;
-    left:0 !important;
-    right:0 !important;
-    width:100% !important;
-    border-radius:16px 16px 0 0 !important;
-    z-index:9999 !important;
-  }
-  .dtx-cb-wrap{
-    border-radius:16px 16px 0 0;
-    padding:16px 16px 20px 0;
-  }
-  ._cb-accent{
-    margin-right:14px;
+    display:none !important;
   }
   ._cb-row{
     flex-direction:column;
