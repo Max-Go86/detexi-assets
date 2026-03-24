@@ -16,15 +16,15 @@ function e164(raw){
 
 var CSS=`
 .dtx-cb-wrap*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.dtx-cb-wrap{background:#0f172a;border-radius:14px;padding:20px 20px 20px 0;width:100%;display:flex;overflow:hidden;border:0.5px solid #1e293b;position:relative;}
-.dtx-cb-wrap.hero{background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+.dtx-cb-wrap{background:#0f172a !important;border-radius:14px;padding:20px 20px 20px 0;width:100%;display:flex;overflow:hidden;border:0.5px solid #1e293b;position:relative;}
+.dtx-cb-wrap.hero{background:rgba(15,23,42,0.92) !important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 #dtx-callback-hero{position:absolute !important;bottom:40px !important;right:40px !important;width:300px !important;z-index:10 !important;display:block !important;}
 ._cb-accent{width:4px;background:#2aa8a8;border-radius:0 2px 2px 0;flex-shrink:0;margin-right:18px;}
 ._cb-content{flex:1;min-width:0;}
 ._cb-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-._cb-title{font-size:13px;font-weight:500;color:#f1f5f9;}
+._cb-title{font-size:13px;font-weight:700;color:#ffffff !important;}
 ._cb-badge{background:#134e4a;border-radius:20px;padding:3px 10px;font-size:10px;color:#2aa8a8;font-weight:500;letter-spacing:0.03em;white-space:nowrap;}
-._cb-sub{font-size:11px;color:#64748b;margin-bottom:12px;line-height:1.5;}
+._cb-sub{font-size:11px;color:#94a3b8;margin-bottom:12px;line-height:1.5;}
 ._cb-row{display:flex;gap:8px;align-items:center;}
 ._cb-input{flex:1;min-width:0;padding:9px 12px;background:#1e293b;border:0.5px solid #334155;border-radius:8px;font-size:12px;color:#f1f5f9;outline:none;transition:border-color .18s;font-family:inherit;}
 ._cb-input::placeholder{color:#475569}
@@ -32,7 +32,7 @@ var CSS=`
 ._cb-input.error{border-color:#ef4444}
 ._cb-errmsg{font-size:10px;color:#ef4444;margin-top:4px;display:none;}
 ._cb-errmsg.show{display:block}
-._cb-btn{padding:9px 16px;background:#2aa8a8;border:none;border-radius:8px;font-size:12px;font-weight:500;color:#fff;white-space:nowrap;cursor:pointer;transition:background .15s,transform .1s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
+._cb-btn{padding:9px 16px;background:#2aa8a8;border:none;border-radius:8px;font-size:12px;font-weight:600;color:#fff;white-space:nowrap;cursor:pointer;transition:background .15s,transform .1s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;}
 ._cb-btn:hover:not(:disabled){background:#1d7a7a}
 ._cb-btn:active:not(:disabled){transform:scale(.98)}
 ._cb-btn:disabled{opacity:0.6;cursor:not-allowed;background:#334155;color:#94a3b8}
@@ -48,23 +48,11 @@ var CSS=`
 ._cb-success-title{font-size:14px;font-weight:500;color:#f1f5f9;margin-bottom:4px;}
 ._cb-success-sub{font-size:11px;color:#64748b;line-height:1.5;}
 
-/* === MOBILE : masquer le hero widget, garder seulement dtx-callback === */
 @media(max-width:768px){
-  #dtx-callback-hero{
-    display:none !important;
-  }
-  ._cb-row{
-    flex-direction:column;
-    align-items:stretch;
-  }
-  ._cb-input{
-    width:100%;
-  }
-  ._cb-btn{
-    width:100%;
-    padding:11px 16px;
-    font-size:13px;
-  }
+  #dtx-callback-hero{display:none !important;}
+  ._cb-row{flex-direction:column;align-items:stretch;}
+  ._cb-input{width:100%;}
+  ._cb-btn{width:100%;padding:11px 16px;font-size:13px;}
 }
 `;
 
@@ -106,7 +94,7 @@ function mount(target, isHero){
         <div class="_cb-accent"></div>
         <div class="_cb-content">
           <div class="_cb-top">
-            <div class="_cb-title">Terugbelservice</div>
+            <div class="_cb-title">Terugbelverzoek</div>
             <div class="_cb-badge">GRATIS</div>
           </div>
           <div class="_cb-sub">Een adviseur belt u terug binnen 30 seconden.</div>
