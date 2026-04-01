@@ -6,7 +6,7 @@ var WH='https://max-go.app.n8n.cloud/webhook/5a36b2a9-5d3a-47b5-a65e-f83b9ee9abd
 var SRC='detexi-web-v1';
 var MAX_MSG=10,WIN_MS=60000,MAX_LEN=500;
 var CDN='https://cdn.jsdelivr.net/gh/Max-Go86/detexi-assets@main/';
-var ICON_URL=CDN+'Detexi%20-%20ronde%20logo%20witte%20achtergrond.png';
+var ICON_URL='https://cdn.prod.website-files.com/69bd64696beb173d9df4ace2/69bd64696beb173d9df4acf2_Detexi%20-%20ronde%20logo%20witte%20achtergrond.png';
 
 var sid=(function(){var s=sessionStorage.getItem('_dtxs');if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2);sessionStorage.setItem('_dtxs',s);}return s;})();
 var fp=(function(){try{return btoa([navigator.language,screen.width,screen.height,screen.colorDepth,navigator.hardwareConcurrency||0,Intl.DateTimeFormat().resolvedOptions().timeZone].join('|')).slice(0,24);}catch(e){return'x';}})();
