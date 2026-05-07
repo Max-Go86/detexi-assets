@@ -11,7 +11,8 @@ Signatures email officielles Detexi, alignées sur la charte production (palette
 
 ## Caractéristiques visuelles
 
-- **Logo header** : référencé via raw.githubusercontent.com → `detexi-logo-header.png`
+- **Logo header** : hébergé sur Supabase Storage (CDN)
+  - URL : `https://qelzuiqqkygusrbwaerp.supabase.co/storage/v1/object/public/logo_Detexi/detexi-logo.png`
 - **Couleurs** : `#117B69` (Accent Primary), `#131413` (Neutral Primary), `#FFFFFF` (icônes)
 - **Lignes** : teal #117B69 avec fade aux extrémités
 - **Icônes** (téléphone, email, pin) : SVG embed, fond teal, pictos blancs
@@ -41,11 +42,16 @@ Signatures email officielles Detexi, alignées sur la charte production (palette
 
 ## Note technique
 
-Le logo est chargé depuis le CDN GitHub raw au moment où le destinataire ouvre le mail. Gmail charge automatiquement les images des contacts/expéditeurs connus. Outlook demande l'autorisation la première fois puis retient.
+Le logo est chargé depuis Supabase Storage (projet `qelzuiqqkygusrbwaerp`, bucket public `logo_Detexi`) au moment où le destinataire ouvre le mail. Gmail charge automatiquement les images des contacts/expéditeurs connus. Outlook demande l'autorisation la première fois puis retient.
+
+**Avantages Supabase vs raw GitHub :**
+- CDN dédié plus rapide (latence réduite)
+- Pas de rate limit
+- Domaine plus professionnel pour la délivrabilité mail
 
 ## Mise à jour
 
-Pour modifier le logo affiché dans toutes les signatures, remplacer simplement le fichier `detexi-logo-header.png` à la racine du repo. Les signatures déjà envoyées récupèrent automatiquement la nouvelle version.
+Pour modifier le logo affiché dans toutes les signatures, remplacer simplement le fichier `detexi-logo.png` dans le bucket Supabase `logo_Detexi`. Les signatures déjà envoyées récupèrent automatiquement la nouvelle version (cache CDN à prendre en compte).
 
 ## Charte appliquée
 
