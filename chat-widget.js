@@ -21,8 +21,8 @@ function detectLang(t){if(/\b(ik|je|jij|de|het|een|beveiliging|alarm|prijs|insta
 function typingDelay(r){return Math.min(1800,400+r.length*11);}
 
 var T={
-  nl:{welcome:'Goeiedag! 👋 Hoe kan ik u helpen? Stel gerust uw vragen over onze beveiligingsoplossingen of vraag een gratis diagnosebezoek aan.',placeholder:'Stel uw vraag…',error:'Er is een probleem opgetreden. Bel ons op <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Te veel berichten. Wacht even voor u verdergaat.'},
-  fr:{welcome:'Bonjour ! Comment puis-je vous aider ? Posez vos questions sur nos systèmes d’alarme ou demandez un diagnostic gratuit.',placeholder:'Posez votre question…',error:'Une erreur est survenue. Appelez-nous au <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Trop de messages. Veuillez patienter.'}
+  nl:{welcome:'Goeiedag! 👋 Hoe kan ik u helpen?',status:'Virtuele assistent · online',placeholder:'Stel uw vraag…',error:'Er is een probleem opgetreden. Bel ons op <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Te veel berichten. Wacht even voor u verdergaat.'},
+  fr:{welcome:'Bonjour ! 👋 Comment puis-je vous aider ?',status:'Assistant virtuel · en ligne',placeholder:'Posez votre question…',error:'Une erreur est survenue. Appelez-nous au <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Trop de messages. Veuillez patienter.'}
 };
 
 var CHAT_ICO='<svg viewBox="0 0 24 24" fill="none" width="28" height="28"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="white" opacity=".97"/><circle cx="9" cy="10" r="1.3" fill="#117B69"/><circle cx="12" cy="10" r="1.3" fill="#117B69"/><circle cx="15" cy="10" r="1.3" fill="#117B69"/></svg>';
@@ -69,7 +69,8 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:\'Po
 +'#_dtxsb:hover{background:#013B31}'
 +'#_dtxsb:active{transform:scale(.91)}'
 +'#_dtxsb:disabled{background:#b0bec5;cursor:not-allowed}'
-+'#_dtxpw{text-align:center;padding:5px 0 7px;font-size:9px;color:#cbd5e0;flex-shrink:0}'
++'#_dtxpw{text-align:center;padding:5px 10px 7px;font-size:9px;color:#9fb4af;flex-shrink:0;line-height:1.5}'
++'#_dtxpw a{color:#117B69;text-decoration:underline}'
 +'@media(max-width:400px){#_dtxw{width:calc(100vw - 20px);right:10px;bottom:88px}}';
 
 var root=document.createElement('div');root.id='_dtx';
@@ -80,17 +81,19 @@ var bdg=document.createElement('div');bdg.id='_dtxbdg';bdg.textContent='1';fab.a
 root.appendChild(fab);
 var win=document.createElement('div');win.id='_dtxw';win.setAttribute('role','dialog');win.setAttribute('aria-modal','true');
 var hd=document.createElement('div');hd.id='_dtxhd';
-hd.innerHTML='<div class="_hd-left"><img class="_hlogo" src="'+LOGO_URL+'" alt="DETEXI"/><div class="_st"><span class="_sd"></span>Online &mdash; antwoordt direct</div></div><button id="_dtxcl" aria-label="Sluiten">'+CLOSE_DARK+'</button>';
+hd.innerHTML='<div class="_hd-left"><img class="_hlogo" src="'+LOGO_URL+'" alt="DETEXI"/><div class="_st"><span class="_sd"></span><span id="_dtxstatus"></span></div></div><button id="_dtxcl" aria-label="Sluiten">'+CLOSE_DARK+'</button>';
 win.appendChild(hd);
 var ms=document.createElement('div');ms.id='_dtxms';ms.setAttribute('role','log');ms.setAttribute('aria-live','polite');win.appendChild(ms);
 var ia=document.createElement('div');ia.id='_dtxia';
 ia.innerHTML='<textarea id="_dtxta" rows="1" maxlength="500" aria-label="Typ uw vraag"></textarea><button id="_dtxsb" aria-label="Verzenden">'+SEND+'</button>';
 win.appendChild(ia);
-var pw=document.createElement('div');pw.id='_dtxpw';pw.innerHTML='DETEXI © 2026 — AI-assistent';win.appendChild(pw);
+var pw=document.createElement('div');pw.id='_dtxpw';win.appendChild(pw);
 root.appendChild(win);document.body.appendChild(root);
 var ta=document.getElementById('_dtxta'),sb=document.getElementById('_dtxsb'),open=false,busy=false;
 var uiLang=(function(){var p=(document.documentElement.lang||navigator.language||'nl').toLowerCase();return p.startsWith('fr')?'fr':'nl';})();
 var t=T[uiLang];ta.placeholder=t.placeholder;
+var _st=document.getElementById('_dtxstatus');if(_st)_st.textContent=t.status;
+pw.innerHTML=(uiLang==='fr'?'Assistant virtuel Detexi · vos données sont traitées selon notre <a href="https://detexi.be/privacybeleid" target="_blank" rel="noopener">politique de confidentialité</a>':'Virtuele assistent Detexi · uw gegevens worden verwerkt volgens ons <a href="https://detexi.be/privacybeleid" target="_blank" rel="noopener">privacybeleid</a>');
 function mkAv(){var d=document.createElement('div');d.className='_mav';var i=document.createElement('img');i.src=ICON_URL;i.alt='';d.appendChild(i);return d;}
 function addMsg(html,role){var w=document.createElement('div');w.className='_mw '+(role==='user'?'u':'b');if(role!=='user'){w.appendChild(mkAv());}var b=document.createElement('div');b.className='_mb';b.innerHTML=html;w.appendChild(b);ms.appendChild(w);ms.scrollTop=ms.scrollHeight;}
 function showTyping(){var w=document.createElement('div');w.className='_mw b';w.id='_dtxty';w.appendChild(mkAv());var b=document.createElement('div');b.className='_mb _ty';b.innerHTML='<span></span><span></span><span></span>';w.appendChild(b);ms.appendChild(w);ms.scrollTop=ms.scrollHeight;}
