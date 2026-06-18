@@ -49,7 +49,7 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:\'Po
 +'._mw{display:flex;gap:8px;align-items:flex-end;animation:_min .18s ease}'
 +'@keyframes _min{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}'
 +'._mw.u{flex-direction:row-reverse}'
-+'._mb{max-width:82%;padding:11px 15px;border-radius:16px;font-size:14px;line-height:1.55;word-break:break-word}'
++'._mb{max-width:80%;padding:13px 17px;border-radius:18px;font-size:14px;line-height:1.5;word-break:break-word}'
 +'._mw.b ._mb{background:#f1f3f5;color:#1a2332;border-bottom-left-radius:3px}'
 +'._mw.u ._mb{background:#39b6aa;color:#fff;border-bottom-right-radius:3px}'
 +'._mb a{color:#39b6aa;text-decoration:underline}'
