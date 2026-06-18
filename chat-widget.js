@@ -30,7 +30,7 @@ var CLOSE='<svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="
 var CLOSE_DARK='<svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="M18 6L6 18M6 6l12 12" stroke="#131413" stroke-width="2.2" stroke-linecap="round"/></svg>';
 var SEND='<svg viewBox="0 0 24 24" fill="none" width="17" height="17"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:\'Poppins\',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}'
+var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;line-height:1.5;font-family:\'Poppins\',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}'
 +'#_dtxf{position:fixed;bottom:24px;right:24px;z-index:2147483647;width:60px;height:60px;border-radius:50%;background:#39b6aa;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(1,59,49,.4);transition:transform .2s,box-shadow .2s}'
 +'#_dtxf:hover{transform:scale(1.07);box-shadow:0 6px 32px rgba(1,59,49,.55)}'
 +'#_dtxbdg{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#e53e3e;border:2.5px solid #fff;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}'
@@ -49,7 +49,7 @@ var CSS='#_dtx,#_dtx *{box-sizing:border-box;margin:0;padding:0;font-family:\'Po
 +'._mw{display:flex;gap:8px;align-items:flex-end;animation:_min .18s ease}'
 +'@keyframes _min{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}'
 +'._mw.u{flex-direction:row-reverse}'
-+'._mb{max-width:80%;padding:13px 17px;border-radius:18px;font-size:14px;line-height:1.5;word-break:break-word}'
++'._mb{max-width:80%;padding:12px 16px!important;border-radius:18px;font-size:14px!important;line-height:1.5!important;word-break:break-word;white-space:normal!important;overflow-wrap:break-word}'
 +'._mw.b ._mb{background:#f1f3f5;color:#1a2332;border-bottom-left-radius:3px}'
 +'._mw.u ._mb{background:#39b6aa;color:#fff;border-bottom-right-radius:3px}'
 +'._mb a{color:#39b6aa;text-decoration:underline}'
