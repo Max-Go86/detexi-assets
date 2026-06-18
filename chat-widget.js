@@ -21,8 +21,8 @@ function detectLang(t){if(/\b(ik|je|jij|de|het|een|beveiliging|alarm|prijs|insta
 function typingDelay(r){return Math.min(1800,400+r.length*11);}
 
 var T={
-  nl:{welcome:'Goeiedag! Hoe kan ik u helpen? Stel gerust vragen over onze alarmsystemen, prijzen of vraag een gratis diagnosebezoek aan.',placeholder:'Stel uw vraag…',error:'Er is een probleem opgetreden. Bel ons op <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Te veel berichten. Wacht even voor u verdergaat.'},
-  fr:{welcome:'Bonjour ! Comment puis-je vous aider ? Posez vos questions sur nos systèmes d’alarme, nos tarifs ou demandez un diagnostic gratuit.',placeholder:'Posez votre question…',error:'Une erreur est survenue. Appelez-nous au <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Trop de messages. Veuillez patienter.'}
+  nl:{welcome:'Goeiedag! 👋 Hoe kan ik u helpen? Stel gerust uw vragen over onze beveiligingsoplossingen of vraag een gratis diagnosebezoek aan.',placeholder:'Stel uw vraag…',error:'Er is een probleem opgetreden. Bel ons op <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Te veel berichten. Wacht even voor u verdergaat.'},
+  fr:{welcome:'Bonjour ! Comment puis-je vous aider ? Posez vos questions sur nos systèmes d’alarme ou demandez un diagnostic gratuit.',placeholder:'Posez votre question…',error:'Une erreur est survenue. Appelez-nous au <a href="tel:+32485280280" style="color:#117B69">+32 485 280 280</a>.',rateLimit:'Trop de messages. Veuillez patienter.'}
 };
 
 var CHAT_ICO='<svg viewBox="0 0 24 24" fill="none" width="28" height="28"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="white" opacity=".97"/><circle cx="9" cy="10" r="1.3" fill="#117B69"/><circle cx="12" cy="10" r="1.3" fill="#117B69"/><circle cx="15" cy="10" r="1.3" fill="#117B69"/></svg>';
