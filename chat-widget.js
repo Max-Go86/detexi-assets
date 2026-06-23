@@ -94,7 +94,8 @@ var t=T[uiLang];ta.placeholder=t.placeholder;
 var _st=document.getElementById('_dtxstatus');if(_st)_st.textContent=t.status;
 pw.innerHTML=(uiLang==='fr'?'Assistant virtuel Detexi · vos données sont traitées selon notre <a href="https://detexi.be/privacybeleid" target="_blank" rel="noopener">politique de confidentialité</a>':'Virtuele assistent Detexi · uw gegevens worden verwerkt volgens ons <a href="https://detexi.be/privacybeleid" target="_blank" rel="noopener">privacybeleid</a>');
 function mkAv(){var d=document.createElement('div');d.className='_mav';d.innerHTML=AV_ICO;return d;}
-function mdClean(s){return String(s).replace(/\*\*(.*?)\*\*/g,'$1').replace(/__(.*?)__/g,'$1').replace(/^#{1,6}\s+/gm,'').replace(/^\s*[-*]\s+/gm,'• ').replace(/\*\*/g,'').replace(/\n/g,'<br>');}
+function mdEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mdClean(s){s=mdEsc(s);s=s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+|tel:[^\s)]+)\)/g,function(_m,txt,url){return '<a href="'+url+'" target="_blank" rel="noopener">'+txt+'</a>';});return s.replace(/\*\*(.*?)\*\*/g,'$1').replace(/__(.*?)__/g,'$1').replace(/^#{1,6}\s+/gm,'').replace(/^\s*[-*]\s+/gm,'• ').replace(/\*\*/g,'').replace(/\n/g,'<br>');}
 function addMsg(html,role){var w=document.createElement('div');w.className='_mw '+(role==='user'?'u':'b');if(role!=='user'){w.appendChild(mkAv());}var b=document.createElement('div');b.className='_mb';b.innerHTML=html;w.appendChild(b);ms.appendChild(w);ms.scrollTop=ms.scrollHeight;}
 function showTyping(){var w=document.createElement('div');w.className='_mw b';w.id='_dtxty';w.appendChild(mkAv());var b=document.createElement('div');b.className='_mb _ty';b.innerHTML='<span></span><span></span><span></span>';w.appendChild(b);ms.appendChild(w);ms.scrollTop=ms.scrollHeight;}
 function hideTyping(){var x=document.getElementById('_dtxty');if(x)x.remove();}
