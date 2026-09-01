@@ -1,19 +1,20 @@
 /*!
  * Detexi — Bandeau de rappel (bas d'ecran)
- * v4.0 — aligne sur le design system Webflow
+ * v5.0
  *
- * v4 : plus AUCUNE couleur codee en dur. Le bandeau consomme les variables
- *      CSS natives du site (collection "Colors"), donc il herite du theme
- *      exactement comme un composant Webflow. Si les tokens changent dans
- *      le Designer, le bandeau suit sans redeploiement.
+ * v5 : deux corrections apres test reel sur mobile.
+ *   1) Les tokens SEMANTIQUES (bg-secondary, text-primary, button-primary-*)
+ *      ne se resolvent pas hors du wrapper Webflow : le bandeau ressortait
+ *      blanc. On passe sur les tokens CORE, dont la valeur est fixe et non
+ *      aliasee, donc previsible quel que soit le scope.
+ *   2) Sur mobile les champs etaient replies derriere un clic. Ils sont
+ *      desormais visibles d'emblee : moins de friction, une seule action.
  *
- * Tokens utilises :
- *   --_colors---background-color--bg-secondary        fond du bandeau
- *   --_colors---text-color--text-primary              texte
- *   --_colors---border-color--border-primary          bordures
- *   --_colors---border-color--border-accent           focus champ
- *   --_colors---input--input-primary-bg / -text / -border / -text-placeholder
- *   --_colors---button--button-primary-bg / -bg-hover / -text / -border
+ * Tokens core utilises :
+ *   --_colors---core-neutral-color--neutral-secondary   fond
+ *   --_colors---core-neutral-color--neutral-inverse     texte
+ *   --_colors---core-color-tint--neutral-inverse-a10/20/60
+ *   --_colors---core-accent-color--accent-primary(-hover)
  *
  * Pose : une seule ligne dans le Footer code du site. Aucun bloc Embed.
  */
@@ -81,24 +82,18 @@
     return o;
   }
 
-  // Les fallbacks apres la virgule ne servent que si le site n'expose pas
-  // les variables (ex. preview isole). En production, ce sont les tokens
-  // Webflow qui pilotent.
   var CSS = [
-    '#dtxbar{--dtx-bg:var(--_colors---background-color--bg-secondary,#1B1D1C);',
-    '--dtx-fg:var(--_colors---text-color--text-primary,#ECEEED);',
-    '--dtx-fg2:var(--_colors---text-color--text-secondary,rgba(236,238,237,.6));',
-    '--dtx-bd:var(--_colors---border-color--border-primary,rgba(236,238,237,.1));',
-    '--dtx-bd-acc:var(--_colors---border-color--border-accent,#117B69);',
-    '--dtx-in-bg:var(--_colors---input--input-primary-bg,transparent);',
-    '--dtx-in-fg:var(--_colors---input--input-primary-text,#ECEEED);',
-    '--dtx-in-ph:var(--_colors---input--input-primary-text-placeholder,rgba(236,238,237,.35));',
-    '--dtx-in-bd:var(--_colors---input--input-primary-border,rgba(236,238,237,.1));',
-    '--dtx-btn-bg:var(--_colors---button--button-primary-bg,rgba(17,123,105,.1));',
-    '--dtx-btn-bg-h:var(--_colors---button--button-primary-bg-hover,#117B69);',
-    '--dtx-btn-fg:var(--_colors---button--button-primary-text,#fff);',
-    '--dtx-btn-bd:var(--_colors---button--button-primary-border,transparent);',
-    '--dtx-acc:var(--_colors---core-accent-color--accent-primary,#117B69);}',
+    // Tokens CORE : valeurs fixes dans la collection Colors, pas d'alias
+    // dependant du wrapper de theme. Les fallbacks reprennent les memes
+    // valeurs, donc le rendu est identique meme hors scope Webflow.
+    '#dtxbar{--dtx-bg:var(--_colors---core-neutral-color--neutral-secondary,#1B1D1C);',
+    '--dtx-fg:var(--_colors---core-neutral-color--neutral-inverse,#ECEEED);',
+    '--dtx-fg2:var(--_colors---core-color-tint--neutral-inverse-a60,rgba(236,238,237,.6));',
+    '--dtx-bd:var(--_colors---core-color-tint--neutral-inverse-a10,rgba(236,238,237,.1));',
+    '--dtx-in-bd:var(--_colors---core-color-tint--neutral-inverse-a20,rgba(236,238,237,.2));',
+    '--dtx-in-ph:var(--_colors---core-color-tint--neutral-inverse-a50,rgba(236,238,237,.5));',
+    '--dtx-acc:var(--_colors---core-accent-color--accent-primary,#117B69);',
+    '--dtx-acc-h:var(--_colors---core-accent-color--accent-primary-hover,#27B3A8);}',
 
     '#dtxbar,#dtxbar *{box-sizing:border-box;margin:0;padding:0}',
     '#dtxbar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;',
@@ -114,19 +109,19 @@
     '.dtxb-fld{position:relative;flex:0 1 220px;min-width:0}',
     '.dtxb-fld--s{flex:0 1 128px}',
     '.dtxb-i{width:100%;height:46px;padding:0 15px;font-family:inherit;font-size:14.5px;',
-    'color:var(--dtx-in-fg);background:var(--dtx-in-bg);border:1px solid var(--dtx-in-bd);',
+    'color:var(--dtx-fg);background:transparent;border:1px solid var(--dtx-in-bd);',
     'border-radius:8px;outline:none;transition:border-color .15s;-webkit-appearance:none}',
     '.dtxb-i::placeholder{color:var(--dtx-in-ph)}',
-    '.dtxb-i:focus{border-color:var(--dtx-bd-acc)}',
+    '.dtxb-i:focus{border-color:var(--dtx-acc)}',
     '.dtxb-i.err{border-color:#e05252}',
     '.dtxb-e{display:none;position:absolute;top:-18px;left:2px;font-size:11px;color:#f0a0a0;white-space:nowrap}',
     '.dtxb-e.on{display:block}',
     '.dtxb-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important}',
     '.dtxb-btn{flex:0 0 auto;height:46px;padding:0 26px;font-family:"Instrument Sans",Poppins,sans-serif;',
-    'font-size:14.5px;font-weight:600;color:var(--dtx-btn-fg);background:var(--dtx-btn-bg);',
-    'border:1px solid var(--dtx-btn-bd);border-radius:8px;cursor:pointer;white-space:nowrap;',
+    'font-size:14.5px;font-weight:600;color:#fff;background:var(--dtx-acc);',
+    'border:none;border-radius:8px;cursor:pointer;white-space:nowrap;',
     'transition:background .18s,transform .06s}',
-    '.dtxb-btn:hover:not(:disabled){background:var(--dtx-btn-bg-h)}',
+    '.dtxb-btn:hover:not(:disabled){background:var(--dtx-acc-h)}',
     '.dtxb-btn:active:not(:disabled){transform:translateY(1px)}',
     '.dtxb-btn:disabled{opacity:.5;cursor:default}',
     '.dtxb-x{position:absolute;top:50%;right:24px;transform:translateY(-50%);width:26px;height:26px;',
@@ -134,18 +129,19 @@
     'cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s;font-family:inherit}',
     '.dtxb-x:hover{color:var(--dtx-fg)}',
     '.dtxb-ok{padding:17px 20px;text-align:center;font-size:15px;color:var(--dtx-fg)}',
-    '.dtxb-ok b{color:var(--dtx-acc);font-weight:600}',
+    '.dtxb-ok b{color:var(--dtx-acc-h);font-weight:600}',
 
+    // Mobile : tout est visible, pas de depliage
     '@media(max-width:900px){',
-    '#dtxbar-in{padding:12px 44px 12px 16px;gap:10px;flex-wrap:wrap}',
-    '.dtxb-t{flex:1;font-size:14px;white-space:normal}',
-    '.dtxb-f{display:none;flex:0 0 100%;order:3;gap:8px}',
-    '#dtxbar.open .dtxb-f{display:flex}',
-    '.dtxb-fld{flex:1 1 58%}.dtxb-fld--s{flex:1 1 36%}',
-    '.dtxb-e{top:auto;bottom:-16px}',
-    '.dtxb-btn{padding:0 18px;font-size:14px}',
-    '#dtxbar.open .dtxb-btn{flex:1 1 100%;order:4}',
-    '.dtxb-x{right:12px}}',
+    '#dtxbar-in{padding:12px 14px 14px;gap:8px;flex-wrap:wrap;align-items:stretch}',
+    '.dtxb-t{flex:0 0 100%;font-size:13.5px;white-space:normal;padding-right:30px}',
+    '.dtxb-f{flex:0 0 100%;gap:8px;justify-content:stretch}',
+    '.dtxb-fld{flex:1 1 58%}',
+    '.dtxb-fld--s{flex:1 1 34%}',
+    '.dtxb-i{height:44px;font-size:16px}',
+    '.dtxb-btn{flex:0 0 100%;height:46px;padding:0 18px}',
+    '.dtxb-e{top:auto;bottom:-15px}',
+    '.dtxb-x{top:10px;right:10px;transform:none}}',
     '@media(prefers-reduced-motion:reduce){#dtxbar{transition:none}}'
   ].join('');
 
@@ -193,7 +189,6 @@
     var elH = document.getElementById('dtxb-h');
     var btn = document.getElementById('dtxb-go');
 
-    function isMobile() { return window.matchMedia('(max-width:900px)').matches; }
     function sync() { liftChat(bar.classList.contains('on') ? bar.offsetHeight : 0); }
 
     var shown = false;
@@ -225,12 +220,6 @@
     });
 
     function go() {
-      if (isMobile() && !bar.classList.contains('open')) {
-        bar.classList.add('open');
-        setTimeout(function () { sync(); elT.focus(); }, 60);
-        return;
-      }
-
       err('dtxb-et', ''); err('dtxb-ep', '');
       elT.classList.remove('err'); elP.classList.remove('err');
 
