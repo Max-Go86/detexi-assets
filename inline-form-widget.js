@@ -1,19 +1,16 @@
 /*!
  * Detexi — Bandeau de rappel (bas d'ecran)
- * v6.0
+ * v7.0
  *
- * v6 : correction de specificite CSS. En v5 les selecteurs etaient de
- *      simples classes (.dtxb-btn, .dtxb-i), donc les regles Webflow du
- *      site les ecrasaient : bouton sans padding, champs trop serres.
- *      Tous les selecteurs sont desormais prefixes par #dtxbar (ID + classe),
- *      ce qui passe devant les styles du site sans recourir a !important.
- *      Respiration augmentee : champs 18px, bouton 28px.
+ * v7 : la fermeture ne fait plus disparaitre le bandeau definitivement.
+ *      Il se reduit en pastille discrete en bas a gauche (loin de la bulle
+ *      de chat, qui est a droite). Un clic le rouvre. L'etat reduit suit la
+ *      navigation via sessionStorage.
+ *      Apres une demande envoyee, tout disparait : le visiteur a converti,
+ *      inutile de lui reproposer.
  *
- * Tokens core (valeur fixe, resolus hors du wrapper de theme Webflow) :
- *   --_colors---core-neutral-color--neutral-secondary   fond
- *   --_colors---core-neutral-color--neutral-inverse     texte
- *   --_colors---core-color-tint--neutral-inverse-a10/20/50/60
- *   --_colors---core-accent-color--accent-primary(-hover)
+ * Langue : detection sur /fr-be dans le chemin, donc toutes les pages
+ * detexi.be/fr-be/... passent en francais automatiquement.
  *
  * Pose : une seule ligne dans le Footer code du site. Aucun bloc Embed.
  */
@@ -25,7 +22,8 @@
 
   var ENDPOINT = 'https://max-go.app.n8n.cloud/webhook/detexi-form-inline-r7k2';
   var TOKEN = 'dtx_web_8f3a1c9e2b6d4f7a0e8c3b5d9f2a7e4c';
-  var DISMISS_KEY = '_dtxBarClosed';
+  var MIN_KEY = '_dtxBarMinimized';  // reduit en pastille
+  var DONE_KEY = '_dtxBarDone';      // demande envoyee : on n'affiche plus rien
 
   var T = {
     nl: {
@@ -38,7 +36,8 @@
       errTel: 'Ongeldig nummer',
       errCp: '4 cijfers',
       errNet: 'Probleem — bel ons op +32 485 28 02 80',
-      close: 'Sluiten'
+      close: 'Sluiten',
+      reopen: 'Formulier heropenen'
     },
     fr: {
       pitch: 'Soyez rappelé sous 24h',
@@ -50,9 +49,12 @@
       errTel: 'Numéro invalide',
       errCp: '4 chiffres',
       errNet: 'Problème — appelez-nous au +32 485 28 02 80',
-      close: 'Fermer'
+      close: 'Fermer',
+      reopen: 'Rouvrir le formulaire'
     }
   };
+
+  var PHONE_ICO = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
 
   function lang() {
     if (/\/fr-be(\/|$)/i.test(location.pathname)) return 'fr';
@@ -63,6 +65,9 @@
   function param(n) {
     try { return new URLSearchParams(location.search).get(n) || ''; } catch (e) { return ''; }
   }
+
+  function store(k, v) { try { if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} }
+  function read(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
 
   function attribution() {
     var o = { gclid: '', utm_source: '', utm_medium: '', utm_campaign: '' };
@@ -82,7 +87,7 @@
   }
 
   var CSS = [
-    '#dtxbar{--dtx-bg:var(--_colors---core-neutral-color--neutral-secondary,#1B1D1C);',
+    '#dtxbar,#dtxpill{--dtx-bg:var(--_colors---core-neutral-color--neutral-secondary,#1B1D1C);',
     '--dtx-fg:var(--_colors---core-neutral-color--neutral-inverse,#ECEEED);',
     '--dtx-fg2:var(--_colors---core-color-tint--neutral-inverse-a60,rgba(236,238,237,.6));',
     '--dtx-bd:var(--_colors---core-color-tint--neutral-inverse-a10,rgba(236,238,237,.1));',
@@ -91,7 +96,7 @@
     '--dtx-acc:var(--_colors---core-accent-color--accent-primary,#117B69);',
     '--dtx-acc-h:var(--_colors---core-accent-color--accent-primary-hover,#27B3A8);}',
 
-    '#dtxbar,#dtxbar *{box-sizing:border-box;margin:0;padding:0}',
+    '#dtxbar,#dtxbar *,#dtxpill,#dtxpill *{box-sizing:border-box;margin:0;padding:0}',
     '#dtxbar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;',
     'background:var(--dtx-bg);color:var(--dtx-fg);',
     'border-top:1px solid var(--dtx-bd);',
@@ -142,6 +147,19 @@
     '#dtxbar .dtxb-ok{padding:18px 20px;text-align:center;font-size:15px;color:var(--dtx-fg)}',
     '#dtxbar .dtxb-ok b{color:var(--dtx-acc-h);font-weight:600}',
 
+    // Pastille de reouverture : en bas a GAUCHE, la bulle de chat est a droite
+    '#dtxpill{position:fixed;left:24px;bottom:calc(24px + env(safe-area-inset-bottom));',
+    'z-index:2147483000;display:none;align-items:center;gap:9px;',
+    'height:46px;padding:0 20px;margin:0;border:none;border-radius:23px;',
+    'font-family:"Instrument Sans",Poppins,sans-serif;font-size:14px;font-weight:600;line-height:1;',
+    'color:#fff;background:var(--dtx-acc);cursor:pointer;white-space:nowrap;',
+    'box-shadow:0 4px 20px rgba(1,59,49,.35);',
+    'opacity:0;transform:translateY(10px);',
+    'transition:opacity .25s,transform .25s,background .18s}',
+    '#dtxpill.on{display:inline-flex;opacity:1;transform:none}',
+    '#dtxpill:hover{background:var(--dtx-acc-h)}',
+    '#dtxpill svg{flex:0 0 auto;display:block}',
+
     '@media(max-width:900px){',
     '#dtxbar #dtxbar-in{padding:12px 14px 16px;gap:9px;flex-wrap:wrap;align-items:stretch}',
     '#dtxbar .dtxb-t{flex:0 0 100%;font-size:13.5px;white-space:normal;padding-right:32px}',
@@ -151,8 +169,9 @@
     '#dtxbar .dtxb-i{height:46px;line-height:46px;font-size:16px;padding:0 16px}',
     '#dtxbar .dtxb-btn{flex:0 0 100%;width:100%;height:48px;min-width:0}',
     '#dtxbar .dtxb-e{top:auto;bottom:-15px}',
-    '#dtxbar .dtxb-x{top:10px;right:10px;transform:none}}',
-    '@media(prefers-reduced-motion:reduce){#dtxbar{transition:none}}'
+    '#dtxbar .dtxb-x{top:10px;right:10px;transform:none}',
+    '#dtxpill{left:16px;bottom:calc(16px + env(safe-area-inset-bottom));height:44px;padding:0 17px;font-size:13.5px}}',
+    '@media(prefers-reduced-motion:reduce){#dtxbar,#dtxpill{transition:none}}'
   ].join('');
 
   function injectCSS() {
@@ -193,6 +212,13 @@
       '</div>';
     document.body.appendChild(bar);
 
+    var pill = document.createElement('button');
+    pill.id = 'dtxpill';
+    pill.type = 'button';
+    pill.setAttribute('aria-label', t.reopen);
+    pill.innerHTML = PHONE_ICO + '<span>' + t.cta + '</span>';
+    document.body.appendChild(pill);
+
     var inn = document.getElementById('dtxbar-in');
     var elT = document.getElementById('dtxb-t');
     var elP = document.getElementById('dtxb-p');
@@ -201,24 +227,34 @@
 
     function sync() { liftChat(bar.classList.contains('on') ? bar.offsetHeight : 0); }
 
-    var shown = false;
-    function show() {
-      if (shown) return;
-      shown = true;
+    function openBar() {
+      pill.classList.remove('on');
       bar.classList.add('on');
+      store(MIN_KEY, null);
       setTimeout(sync, 400);
     }
-    setTimeout(show, 1500);
+    function minimize() {
+      bar.classList.remove('on');
+      liftChat(0);
+      store(MIN_KEY, '1');
+      setTimeout(function () { pill.classList.add('on'); }, 260);
+    }
+
+    var shown = false;
+    function firstShow() {
+      if (shown) return;
+      shown = true;
+      if (read(MIN_KEY) === '1') { pill.classList.add('on'); return; }
+      openBar();
+    }
+    setTimeout(firstShow, 1500);
     window.addEventListener('scroll', function onS() {
-      if (window.scrollY > 140) { show(); window.removeEventListener('scroll', onS); }
+      if (window.scrollY > 140) { firstShow(); window.removeEventListener('scroll', onS); }
     }, { passive: true });
     window.addEventListener('resize', sync);
 
-    document.getElementById('dtxb-x').addEventListener('click', function () {
-      bar.classList.remove('on');
-      liftChat(0);
-      try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch (e) {}
-    });
+    document.getElementById('dtxb-x').addEventListener('click', minimize);
+    pill.addEventListener('click', openBar);
 
     function err(id, msg) {
       var b = document.getElementById(id);
@@ -265,8 +301,10 @@
             } catch (e) {}
             inn.innerHTML = '<div class="dtxb-ok">' + t.ok + '</div>';
             sync();
+            // Converti : on retire tout, pastille comprise.
+            store(DONE_KEY, '1');
+            store(MIN_KEY, null);
             setTimeout(function () { bar.classList.remove('on'); liftChat(0); }, 5000);
-            try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch (e) {}
           } else {
             btn.disabled = false; btn.textContent = t.cta;
             err('dtxb-et', t.errNet);
@@ -282,7 +320,7 @@
   }
 
   function init() {
-    try { if (sessionStorage.getItem(DISMISS_KEY) === '1') return; } catch (e) {}
+    if (read(DONE_KEY) === '1') return;
     injectCSS();
     build();
   }
