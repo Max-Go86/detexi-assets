@@ -1,12 +1,20 @@
 /*!
  * Detexi — Bandeau de rappel (bas d'ecran)
- * v7.1
+ * v8.0
  *
- * v7.1 : accroche revue. "Soyez rappele sous 24h" decrivait le mecanisme,
- *        pas le benefice. Remplacee par l'offre concrete : l'audit gratuit
- *        a domicile, qui est le vrai differenciateur (quelqu'un se deplace).
- *        Le libelle du bouton reste une demande de rappel, puisque c'est
- *        litteralement ce que fait le formulaire.
+ * v8 : deux corrections signalees en test.
+ *
+ *   1) CONFORMITE — le bandeau passait devant la banniere de consentement
+ *      cookies, obligeant le visiteur a le fermer pour pouvoir accepter ou
+ *      refuser. Inacceptable : le consentement doit rester libre et accessible.
+ *      Le bandeau attend desormais que le consentement soit exprime (cookies
+ *      fa-consent-* / fs-consent-* poses par Flowappz) avant de s'afficher,
+ *      et son z-index passe SOUS celui de la banniere.
+ *
+ *   2) COULEUR — accent-primary (#117B69) rend un vert profond a l'ecran,
+ *      loin du teal Detexi percu. Les elements flottants adoptent le meme
+ *      teal que la bulle de chat, soit accent-primary-a60 (#39b6aa), avec
+ *      accent-primary en survol — exactement la convention du chat-widget.
  *
  * Pose : une seule ligne dans le Footer code du site. Aucun bloc Embed.
  */
@@ -20,6 +28,7 @@
   var TOKEN = 'dtx_web_8f3a1c9e2b6d4f7a0e8c3b5d9f2a7e4c';
   var MIN_KEY = '_dtxBarMinimized';
   var DONE_KEY = '_dtxBarDone';
+  var CONSENT_TIMEOUT = 60000; // filet de securite si aucune banniere n'existe
 
   var T = {
     nl: {
@@ -67,6 +76,12 @@
   function store(k, v) { try { if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
 
+  // Le consentement Flowappz depose des cookies fa-consent-* / fs-consent-*.
+  // Tant qu'aucun n'existe, la banniere est encore a l'ecran : on n'affiche rien.
+  function consentGiven() {
+    try { return /(^|;\s*)(fa|fs)-consent-/i.test(document.cookie); } catch (e) { return true; }
+  }
+
   function attribution() {
     var o = { gclid: '', utm_source: '', utm_medium: '', utm_campaign: '' };
     try {
@@ -91,11 +106,13 @@
     '--dtx-bd:var(--_colors---core-color-tint--neutral-inverse-a10,rgba(236,238,237,.1));',
     '--dtx-in-bd:var(--_colors---core-color-tint--neutral-inverse-a20,rgba(236,238,237,.2));',
     '--dtx-in-ph:var(--_colors---core-color-tint--neutral-inverse-a50,rgba(236,238,237,.5));',
-    '--dtx-acc:var(--_colors---core-accent-color--accent-primary,#117B69);',
-    '--dtx-acc-h:var(--_colors---core-accent-color--accent-primary-hover,#27B3A8);}',
+    // Teal percu de la marque, identique a la bulle de chat
+    '--dtx-acc:var(--_colors---core-color-tint--accent-primary-a60,#39b6aa);',
+    '--dtx-acc-h:var(--_colors---core-accent-color--accent-primary,#117B69);}',
 
     '#dtxbar,#dtxbar *,#dtxpill,#dtxpill *{box-sizing:border-box;margin:0;padding:0}',
-    '#dtxbar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;',
+    // z-index volontairement sous la banniere de consentement et la bulle de chat
+    '#dtxbar{position:fixed;left:0;right:0;bottom:0;z-index:9990;',
     'background:var(--dtx-bg);color:var(--dtx-fg);',
     'border-top:1px solid var(--dtx-bd);',
     'font-family:Poppins,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;',
@@ -143,10 +160,10 @@
     'transition:color .15s;font-family:inherit}',
     '#dtxbar .dtxb-x:hover{color:var(--dtx-fg)}',
     '#dtxbar .dtxb-ok{padding:18px 20px;text-align:center;font-size:15px;color:var(--dtx-fg)}',
-    '#dtxbar .dtxb-ok b{color:var(--dtx-acc-h);font-weight:600}',
+    '#dtxbar .dtxb-ok b{color:var(--dtx-acc);font-weight:600}',
 
     '#dtxpill{position:fixed;left:24px;bottom:calc(24px + env(safe-area-inset-bottom));',
-    'z-index:2147483000;display:none;align-items:center;gap:9px;',
+    'z-index:9990;display:none;align-items:center;gap:9px;',
     'height:46px;padding:0 20px;margin:0;border:none;border-radius:23px;',
     'font-family:"Instrument Sans",Poppins,sans-serif;font-size:14px;font-weight:600;line-height:1;',
     'color:#fff;background:var(--dtx-acc);cursor:pointer;white-space:nowrap;',
@@ -237,16 +254,31 @@
     }
 
     var shown = false;
-    function firstShow() {
+    function reveal() {
       if (shown) return;
       shown = true;
       if (read(MIN_KEY) === '1') { pill.classList.add('on'); return; }
       openBar();
     }
-    setTimeout(firstShow, 1500);
-    window.addEventListener('scroll', function onS() {
-      if (window.scrollY > 140) { firstShow(); window.removeEventListener('scroll', onS); }
-    }, { passive: true });
+
+    // Le bandeau ne s'affiche qu'une fois le consentement exprime, pour ne
+    // jamais gener la banniere cookies. Filet de securite : si aucune
+    // banniere n'existe sur la page, on affiche apres CONSENT_TIMEOUT.
+    var started = Date.now();
+    function waitForConsent() {
+      if (shown) return;
+      if (consentGiven()) { setTimeout(armTriggers, 600); return; }
+      if (Date.now() - started > CONSENT_TIMEOUT) { armTriggers(); return; }
+      setTimeout(waitForConsent, 500);
+    }
+    function armTriggers() {
+      if (shown) return;
+      setTimeout(reveal, 900);
+      window.addEventListener('scroll', function onS() {
+        if (window.scrollY > 140) { reveal(); window.removeEventListener('scroll', onS); }
+      }, { passive: true });
+    }
+    waitForConsent();
     window.addEventListener('resize', sync);
 
     document.getElementById('dtxb-x').addEventListener('click', minimize);
