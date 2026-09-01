@@ -1,19 +1,18 @@
 /*!
  * Detexi — Bandeau de rappel (bas d'ecran)
- * v5.0
+ * v6.0
  *
- * v5 : deux corrections apres test reel sur mobile.
- *   1) Les tokens SEMANTIQUES (bg-secondary, text-primary, button-primary-*)
- *      ne se resolvent pas hors du wrapper Webflow : le bandeau ressortait
- *      blanc. On passe sur les tokens CORE, dont la valeur est fixe et non
- *      aliasee, donc previsible quel que soit le scope.
- *   2) Sur mobile les champs etaient replies derriere un clic. Ils sont
- *      desormais visibles d'emblee : moins de friction, une seule action.
+ * v6 : correction de specificite CSS. En v5 les selecteurs etaient de
+ *      simples classes (.dtxb-btn, .dtxb-i), donc les regles Webflow du
+ *      site les ecrasaient : bouton sans padding, champs trop serres.
+ *      Tous les selecteurs sont desormais prefixes par #dtxbar (ID + classe),
+ *      ce qui passe devant les styles du site sans recourir a !important.
+ *      Respiration augmentee : champs 18px, bouton 28px.
  *
- * Tokens core utilises :
+ * Tokens core (valeur fixe, resolus hors du wrapper de theme Webflow) :
  *   --_colors---core-neutral-color--neutral-secondary   fond
  *   --_colors---core-neutral-color--neutral-inverse     texte
- *   --_colors---core-color-tint--neutral-inverse-a10/20/60
+ *   --_colors---core-color-tint--neutral-inverse-a10/20/50/60
  *   --_colors---core-accent-color--accent-primary(-hover)
  *
  * Pose : une seule ligne dans le Footer code du site. Aucun bloc Embed.
@@ -83,9 +82,6 @@
   }
 
   var CSS = [
-    // Tokens CORE : valeurs fixes dans la collection Colors, pas d'alias
-    // dependant du wrapper de theme. Les fallbacks reprennent les memes
-    // valeurs, donc le rendu est identique meme hors scope Webflow.
     '#dtxbar{--dtx-bg:var(--_colors---core-neutral-color--neutral-secondary,#1B1D1C);',
     '--dtx-fg:var(--_colors---core-neutral-color--neutral-inverse,#ECEEED);',
     '--dtx-fg2:var(--_colors---core-color-tint--neutral-inverse-a60,rgba(236,238,237,.6));',
@@ -103,45 +99,59 @@
     'transform:translateY(110%);transition:transform .34s cubic-bezier(.22,1,.36,1);',
     'padding-bottom:env(safe-area-inset-bottom)}',
     '#dtxbar.on{transform:none}',
-    '#dtxbar-in{max-width:1120px;margin:0 auto;padding:14px 76px 14px 24px;display:flex;align-items:center;gap:16px}',
-    '.dtxb-t{flex:0 0 auto;font-size:15px;font-weight:500;letter-spacing:-.01em;white-space:nowrap;color:var(--dtx-fg)}',
-    '.dtxb-f{flex:1;display:flex;gap:10px;align-items:center;justify-content:flex-end;min-width:0}',
-    '.dtxb-fld{position:relative;flex:0 1 220px;min-width:0}',
-    '.dtxb-fld--s{flex:0 1 128px}',
-    '.dtxb-i{width:100%;height:46px;padding:0 15px;font-family:inherit;font-size:14.5px;',
-    'color:var(--dtx-fg);background:transparent;border:1px solid var(--dtx-in-bd);',
-    'border-radius:8px;outline:none;transition:border-color .15s;-webkit-appearance:none}',
-    '.dtxb-i::placeholder{color:var(--dtx-in-ph)}',
-    '.dtxb-i:focus{border-color:var(--dtx-acc)}',
-    '.dtxb-i.err{border-color:#e05252}',
-    '.dtxb-e{display:none;position:absolute;top:-18px;left:2px;font-size:11px;color:#f0a0a0;white-space:nowrap}',
-    '.dtxb-e.on{display:block}',
-    '.dtxb-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important}',
-    '.dtxb-btn{flex:0 0 auto;height:46px;padding:0 26px;font-family:"Instrument Sans",Poppins,sans-serif;',
-    'font-size:14.5px;font-weight:600;color:#fff;background:var(--dtx-acc);',
-    'border:none;border-radius:8px;cursor:pointer;white-space:nowrap;',
-    'transition:background .18s,transform .06s}',
-    '.dtxb-btn:hover:not(:disabled){background:var(--dtx-acc-h)}',
-    '.dtxb-btn:active:not(:disabled){transform:translateY(1px)}',
-    '.dtxb-btn:disabled{opacity:.5;cursor:default}',
-    '.dtxb-x{position:absolute;top:50%;right:24px;transform:translateY(-50%);width:26px;height:26px;',
-    'border:none;border-radius:50%;background:transparent;color:var(--dtx-fg2);font-size:19px;line-height:1;',
-    'cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s;font-family:inherit}',
-    '.dtxb-x:hover{color:var(--dtx-fg)}',
-    '.dtxb-ok{padding:17px 20px;text-align:center;font-size:15px;color:var(--dtx-fg)}',
-    '.dtxb-ok b{color:var(--dtx-acc-h);font-weight:600}',
 
-    // Mobile : tout est visible, pas de depliage
+    '#dtxbar #dtxbar-in{max-width:1120px;margin:0 auto;padding:14px 76px 14px 24px;',
+    'display:flex;align-items:center;gap:16px}',
+    '#dtxbar .dtxb-t{flex:0 0 auto;font-size:15px;font-weight:500;letter-spacing:-.01em;',
+    'white-space:nowrap;color:var(--dtx-fg);line-height:1.3}',
+    '#dtxbar .dtxb-f{flex:1;display:flex;gap:10px;align-items:center;justify-content:flex-end;min-width:0}',
+    '#dtxbar .dtxb-fld{position:relative;flex:0 1 220px;min-width:0}',
+    '#dtxbar .dtxb-fld--s{flex:0 1 132px}',
+
+    '#dtxbar .dtxb-i{display:block;width:100%;height:48px;',
+    'padding:0 18px;margin:0;text-indent:0;',
+    'font-family:inherit;font-size:14.5px;font-weight:400;line-height:48px;',
+    'color:var(--dtx-fg);background:transparent;border:1px solid var(--dtx-in-bd);',
+    'border-radius:10px;outline:none;box-shadow:none;',
+    'transition:border-color .15s;-webkit-appearance:none;appearance:none}',
+    '#dtxbar .dtxb-i::placeholder{color:var(--dtx-in-ph);opacity:1}',
+    '#dtxbar .dtxb-i:focus{border-color:var(--dtx-acc);box-shadow:none}',
+    '#dtxbar .dtxb-i.err{border-color:#e05252}',
+
+    '#dtxbar .dtxb-e{display:none;position:absolute;top:-18px;left:2px;font-size:11px;',
+    'color:#f0a0a0;white-space:nowrap}',
+    '#dtxbar .dtxb-e.on{display:block}',
+    '#dtxbar .dtxb-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important}',
+
+    '#dtxbar .dtxb-btn{display:inline-flex;align-items:center;justify-content:center;',
+    'flex:0 0 auto;height:48px;min-width:150px;padding:0 28px;margin:0;',
+    'font-family:"Instrument Sans",Poppins,sans-serif;font-size:14.5px;font-weight:600;line-height:1;',
+    'color:#fff;background:var(--dtx-acc);border:none;border-radius:10px;',
+    'cursor:pointer;white-space:nowrap;text-decoration:none;box-shadow:none;',
+    'transition:background .18s,transform .06s}',
+    '#dtxbar .dtxb-btn:hover:not(:disabled){background:var(--dtx-acc-h)}',
+    '#dtxbar .dtxb-btn:active:not(:disabled){transform:translateY(1px)}',
+    '#dtxbar .dtxb-btn:disabled{opacity:.5;cursor:default}',
+
+    '#dtxbar .dtxb-x{position:absolute;top:50%;right:24px;transform:translateY(-50%);',
+    'width:28px;height:28px;padding:0;margin:0;border:none;border-radius:50%;',
+    'background:transparent;color:var(--dtx-fg2);font-size:20px;line-height:1;',
+    'cursor:pointer;display:flex;align-items:center;justify-content:center;',
+    'transition:color .15s;font-family:inherit}',
+    '#dtxbar .dtxb-x:hover{color:var(--dtx-fg)}',
+    '#dtxbar .dtxb-ok{padding:18px 20px;text-align:center;font-size:15px;color:var(--dtx-fg)}',
+    '#dtxbar .dtxb-ok b{color:var(--dtx-acc-h);font-weight:600}',
+
     '@media(max-width:900px){',
-    '#dtxbar-in{padding:12px 14px 14px;gap:8px;flex-wrap:wrap;align-items:stretch}',
-    '.dtxb-t{flex:0 0 100%;font-size:13.5px;white-space:normal;padding-right:30px}',
-    '.dtxb-f{flex:0 0 100%;gap:8px;justify-content:stretch}',
-    '.dtxb-fld{flex:1 1 58%}',
-    '.dtxb-fld--s{flex:1 1 34%}',
-    '.dtxb-i{height:44px;font-size:16px}',
-    '.dtxb-btn{flex:0 0 100%;height:46px;padding:0 18px}',
-    '.dtxb-e{top:auto;bottom:-15px}',
-    '.dtxb-x{top:10px;right:10px;transform:none}}',
+    '#dtxbar #dtxbar-in{padding:12px 14px 16px;gap:9px;flex-wrap:wrap;align-items:stretch}',
+    '#dtxbar .dtxb-t{flex:0 0 100%;font-size:13.5px;white-space:normal;padding-right:32px}',
+    '#dtxbar .dtxb-f{flex:0 0 100%;gap:9px;justify-content:stretch}',
+    '#dtxbar .dtxb-fld{flex:1 1 58%}',
+    '#dtxbar .dtxb-fld--s{flex:1 1 34%}',
+    '#dtxbar .dtxb-i{height:46px;line-height:46px;font-size:16px;padding:0 16px}',
+    '#dtxbar .dtxb-btn{flex:0 0 100%;width:100%;height:48px;min-width:0}',
+    '#dtxbar .dtxb-e{top:auto;bottom:-15px}',
+    '#dtxbar .dtxb-x{top:10px;right:10px;transform:none}}',
     '@media(prefers-reduced-motion:reduce){#dtxbar{transition:none}}'
   ].join('');
 
