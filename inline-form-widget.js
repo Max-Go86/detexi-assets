@@ -1,16 +1,12 @@
 /*!
  * Detexi — Bandeau de rappel (bas d'ecran)
- * v7.0
+ * v7.1
  *
- * v7 : la fermeture ne fait plus disparaitre le bandeau definitivement.
- *      Il se reduit en pastille discrete en bas a gauche (loin de la bulle
- *      de chat, qui est a droite). Un clic le rouvre. L'etat reduit suit la
- *      navigation via sessionStorage.
- *      Apres une demande envoyee, tout disparait : le visiteur a converti,
- *      inutile de lui reproposer.
- *
- * Langue : detection sur /fr-be dans le chemin, donc toutes les pages
- * detexi.be/fr-be/... passent en francais automatiquement.
+ * v7.1 : accroche revue. "Soyez rappele sous 24h" decrivait le mecanisme,
+ *        pas le benefice. Remplacee par l'offre concrete : l'audit gratuit
+ *        a domicile, qui est le vrai differenciateur (quelqu'un se deplace).
+ *        Le libelle du bouton reste une demande de rappel, puisque c'est
+ *        litteralement ce que fait le formulaire.
  *
  * Pose : une seule ligne dans le Footer code du site. Aucun bloc Embed.
  */
@@ -22,15 +18,16 @@
 
   var ENDPOINT = 'https://max-go.app.n8n.cloud/webhook/detexi-form-inline-r7k2';
   var TOKEN = 'dtx_web_8f3a1c9e2b6d4f7a0e8c3b5d9f2a7e4c';
-  var MIN_KEY = '_dtxBarMinimized';  // reduit en pastille
-  var DONE_KEY = '_dtxBarDone';      // demande envoyee : on n'affiche plus rien
+  var MIN_KEY = '_dtxBarMinimized';
+  var DONE_KEY = '_dtxBarDone';
 
   var T = {
     nl: {
-      pitch: 'Word binnen 24u teruggebeld',
+      pitch: 'Gratis veiligheidsaudit aan huis',
       tel: 'Telefoonnummer',
       cp: 'Postcode',
-      cta: 'Bel mij terug',
+      cta: 'Vraag mijn audit aan',
+      pillCta: 'Gratis audit',
       sending: 'Versturen…',
       ok: '<b>Bedankt!</b> We bellen u binnen 24u terug.',
       errTel: 'Ongeldig nummer',
@@ -40,10 +37,11 @@
       reopen: 'Formulier heropenen'
     },
     fr: {
-      pitch: 'Soyez rappelé sous 24h',
+      pitch: 'Audit de sécurité gratuit à domicile',
       tel: 'Téléphone',
       cp: 'Code postal',
-      cta: 'Rappelez-moi',
+      cta: 'Demander mon audit',
+      pillCta: 'Audit gratuit',
       sending: 'Envoi…',
       ok: '<b>Merci !</b> Nous vous rappelons sous 24h.',
       errTel: 'Numéro invalide',
@@ -129,7 +127,7 @@
     '#dtxbar .dtxb-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important}',
 
     '#dtxbar .dtxb-btn{display:inline-flex;align-items:center;justify-content:center;',
-    'flex:0 0 auto;height:48px;min-width:150px;padding:0 28px;margin:0;',
+    'flex:0 0 auto;height:48px;min-width:170px;padding:0 28px;margin:0;',
     'font-family:"Instrument Sans",Poppins,sans-serif;font-size:14.5px;font-weight:600;line-height:1;',
     'color:#fff;background:var(--dtx-acc);border:none;border-radius:10px;',
     'cursor:pointer;white-space:nowrap;text-decoration:none;box-shadow:none;',
@@ -147,7 +145,6 @@
     '#dtxbar .dtxb-ok{padding:18px 20px;text-align:center;font-size:15px;color:var(--dtx-fg)}',
     '#dtxbar .dtxb-ok b{color:var(--dtx-acc-h);font-weight:600}',
 
-    // Pastille de reouverture : en bas a GAUCHE, la bulle de chat est a droite
     '#dtxpill{position:fixed;left:24px;bottom:calc(24px + env(safe-area-inset-bottom));',
     'z-index:2147483000;display:none;align-items:center;gap:9px;',
     'height:46px;padding:0 20px;margin:0;border:none;border-radius:23px;',
@@ -182,7 +179,6 @@
     document.head.appendChild(s);
   }
 
-  // Remonte la bulle de chat Detexi pour eviter le chevauchement.
   function liftChat(h) {
     var id = 'dtxbar-chatlift';
     var el = document.getElementById(id);
@@ -216,7 +212,7 @@
     pill.id = 'dtxpill';
     pill.type = 'button';
     pill.setAttribute('aria-label', t.reopen);
-    pill.innerHTML = PHONE_ICO + '<span>' + t.cta + '</span>';
+    pill.innerHTML = PHONE_ICO + '<span>' + t.pillCta + '</span>';
     document.body.appendChild(pill);
 
     var inn = document.getElementById('dtxbar-in');
@@ -301,7 +297,6 @@
             } catch (e) {}
             inn.innerHTML = '<div class="dtxb-ok">' + t.ok + '</div>';
             sync();
-            // Converti : on retire tout, pastille comprise.
             store(DONE_KEY, '1');
             store(MIN_KEY, null);
             setTimeout(function () { bar.classList.remove('on'); liftChat(0); }, 5000);
